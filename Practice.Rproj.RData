@@ -9,15 +9,63 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+
+2_D scatter plot
 ```{r}
 library(ggplot2)
 ggplot(data = mpg)+geom_point(mapping = aes(x = displ, y = hwy))
-head(mpg)
-
+str(mpg)
 ```
+
+Change the color. Has to be done manually, outside of the geom function, i.e., outside of aes parenthesis. Same for the size of a geom_point.
+
+```{r}
+ggplot(data = mpg)+geom_point(mapping = aes(x = displ, y = hwy), color = "blue", size = 2)
+```
+
+Add another level of the data, class, to the plot, by associating the name of the aesthetic to the name of the variable. It adds a legend. Notice the warning generated, using size for a discrete variable is not advised. 
+```{r}
+ggplot(data = mpg)+geom_point(mapping = aes(x = displ, y = hwy, color = class, size = class))
+```
+
+Can also use alpha which controls transparency. 
+
+```{r}
+ggplot(data = mpg)+geom_point(mapping = aes(x = displ, y = hwy), color = class, alpha = class)
+```
+
+Or shape, will only use 6 at a time, and unused groups will go unplotted. 
+```{r}
+ggplot(data = mpg)+geom_point(mapping = aes(x = displ, y = hwy, color = class, shape = class))
+```
+
 
 ```{r}
 head(cars)
 ggplot(data = cars)+geom_point(mapping = aes(x = speed, y = dist))
+
 ```
+
+Plus + can not be at the beginning of a line. Code won't run
+```{r}
+ggplot(data = mpg)
++ geom_point(mapping = aes(x = displ, y = hwy, color = class))
+```
+
+Splitting plots into facets. To do this with a single DISCRETE variable, use facet_wrap()
+```{r}
+ggplot(data = mpg)+ geom_point(mapping = aes(x = displ, y = hwy))+ facet_wrap(~cyl, nrow = 3)
+```
+
+To facet with 2 variables, use facet_grid with a ~ between the variables.
+```{r}
+ggplot(data = mpg)+ geom_point(mapping = aes(x = displ, y = hwy))+ facet_grid(drv ~ cyl)
+```
+
+```{r}
+ggplot(data = mpg)+ geom_point(mapping = aes(x = drv, y = cyl))#+ facet_grid(drv ~ cyl)
+```
+
+
 
